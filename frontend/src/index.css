@@ -1,0 +1,61 @@
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+@layer base {
+  body {
+    @apply bg-laboratory-50 text-laboratory-800 font-sans antialiased;
+    margin: 0;
+    overflow-x: hidden;
+  }
+  
+  /* Dark mode support based on class */
+  .dark body {
+    @apply bg-laboratory-900 text-laboratory-100;
+  }
+  
+  /* Custom Scrollbar for a more professional look */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-laboratory-300 rounded-sm;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-laboratory-400;
+  }
+  .dark ::-webkit-scrollbar-thumb {
+    @apply bg-laboratory-600;
+  }
+  .dark ::-webkit-scrollbar-thumb:hover {
+    @apply bg-laboratory-500;
+  }
+}
+
+@layer components {
+  .panel {
+    @apply bg-white shadow-panel rounded border border-laboratory-200 p-4 transition-colors duration-200;
+  }
+  .dark .panel {
+    @apply bg-laboratory-800 border-laboratory-700 shadow-panel-dark;
+  }
+  
+  .btn-primary {
+    @apply bg-engineering-primary text-white px-4 py-2 rounded text-sm font-medium hover:bg-engineering-hover transition-colors focus:outline-none focus:ring-2 focus:ring-engineering-accent focus:ring-offset-2;
+  }
+  
+  .dark .btn-primary {
+    @apply focus:ring-offset-laboratory-900;
+  }
+
+  .btn-secondary {
+    @apply bg-white border border-laboratory-300 text-laboratory-700 px-4 py-2 rounded text-sm font-medium hover:bg-laboratory-50 transition-colors focus:outline-none focus:ring-2 focus:ring-laboratory-300 focus:ring-offset-2;
+  }
+  
+  .dark .btn-secondary {
+    @apply bg-laboratory-700 border-laboratory-600 text-laboratory-100 hover:bg-laboratory-600 focus:ring-offset-laboratory-900;
+  }
+}
