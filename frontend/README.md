@@ -2,7 +2,7 @@
 
 Welcome to the **Voice Signal Analysis Laboratory**! This is a state-of-the-art web application designed for real-time acoustic telemetry, voice analysis, and signal processing.
 
-![Spectrum Analysis](./public/assets/bgs/bg_spectrum_1785069007605.jpg)
+![Landing Page](./public/assets/screenshots/screenshot_landing.png)
 
 ## 🚀 Features
 
@@ -11,15 +11,13 @@ Welcome to the **Voice Signal Analysis Laboratory**! This is a state-of-the-art 
 *   **Aesthetic UI/UX:** Built with a stunning dark-mode-first design, glassmorphism elements, and smooth micro-animations.
 *   **Audio Upload & Processing:** Upload your own audio files for deep static analysis.
 
-![Audio Analysis](./public/assets/bgs/bg_waveform_1785068995285.jpg)
+![Live Analyzer](./public/assets/screenshots/screenshot_live.png)
 
 ## 🛠️ Tech Stack
 
 *   **Frontend:** React, TypeScript, Vite
 *   **Styling:** Tailwind CSS, Lucide React Icons
 *   **Audio Processing:** Web Audio API (AnalyserNode, MediaStream)
-
-![Workstation Interface](./public/assets/bgs/bg_workstation_1785069047722.jpg)
 
 ## 💻 Getting Started
 
