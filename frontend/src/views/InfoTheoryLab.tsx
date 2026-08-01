@@ -144,7 +144,8 @@ const InfoTheoryLab = () => {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
+          {/* Desktop Table */}
+          <table className="hidden md:table w-full text-left text-sm">
             <thead className="bg-black/20 text-zinc-400 uppercase text-[10px] font-bold tracking-wider font-mono border-b border-white/10">
               <tr>
                 <th className="px-6 py-4">Time</th>
@@ -190,6 +191,53 @@ const InfoTheoryLab = () => {
               )}
             </tbody>
           </table>
+
+          {/* Mobile Cards */}
+          <div className="grid grid-cols-1 md:hidden gap-4 p-4 bg-black/20">
+            {history.length === 0 ? (
+              <div className="bg-black/40 border border-white/5 rounded-xl p-8 max-w-md mx-auto text-center font-sans">
+                <p className="font-bold text-white mb-2">No sessions recorded yet.</p>
+                <p className="text-sm text-zinc-400">1. Go to the Live Analyzer.</p>
+                <p className="text-sm text-zinc-400">2. Click Start Analysis and speak.</p>
+                <p className="text-sm text-zinc-400">3. Click Stop Analysis to finalize the session.</p>
+              </div>
+            ) : (
+              history.map((snapshot) => (
+                <div key={snapshot.id} className="bg-white/5 border border-white/10 rounded-xl p-4 flex flex-col space-y-3 font-mono shadow-lg">
+                  <div className="flex justify-between items-center border-b border-white/5 pb-2">
+                    <span className="text-white font-bold">{snapshot.timestamp}</span>
+                    <span className="text-xs text-zinc-500 bg-black/50 px-2 py-1 rounded">{(snapshot.durationMs / 1000).toFixed(1)}s</span>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    <div className="flex flex-col bg-black/30 p-2 rounded-lg border border-white/5">
+                      <span className="text-zinc-500 mb-1">Peak Freq</span>
+                      <span className="font-bold">{formatHz(snapshot.dominantFreq)}</span>
+                    </div>
+                    <div className="flex flex-col bg-black/30 p-2 rounded-lg border border-indigo-500/10">
+                      <span className="text-zinc-500 mb-1">Entropy</span>
+                      <span className="text-indigo-400 font-bold">{snapshot.entropy.toFixed(3)}</span>
+                    </div>
+                    <div className="flex flex-col bg-black/30 p-2 rounded-lg border border-purple-500/10">
+                      <span className="text-zinc-500 mb-1">SNR</span>
+                      <span className="text-purple-400 font-bold">{snapshot.snrDb.toFixed(1)} dB</span>
+                    </div>
+                    <div className="flex flex-col bg-black/30 p-2 rounded-lg border border-emerald-500/10">
+                      <span className="text-zinc-500 mb-1">Capacity</span>
+                      <span className="text-emerald-400 font-bold">{(snapshot.capacity / 1000).toFixed(1)} kbps</span>
+                    </div>
+                  </div>
+                  
+                  <button 
+                    onClick={() => setSelectedSession(snapshot)}
+                    className="bg-indigo-500/10 hover:bg-indigo-500 border border-indigo-500/20 hover:text-white text-indigo-400 px-4 py-3 mt-2 rounded-lg text-sm font-bold transition-colors flex items-center justify-center shadow-sm w-full font-sans"
+                  >
+                    <FileText size={16} className="mr-2" /> View Detailed Report
+                  </button>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
 

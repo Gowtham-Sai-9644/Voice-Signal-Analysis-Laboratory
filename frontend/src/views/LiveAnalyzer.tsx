@@ -10,6 +10,7 @@ const LiveAnalyzer = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
   const [selectedDevice, setSelectedDevice] = useState<string>('');
+  const [activeTab, setActiveTab] = useState<'waveform' | 'fft' | 'telemetry'>('waveform');
   
   const [metrics, setMetrics] = useState<AudioMetrics | null>(null);
   const lastMetricsUpdate = useRef<number>(0);
@@ -204,12 +205,28 @@ const LiveAnalyzer = () => {
           )}
         </div>
       </div>
+
+      {/* Mobile Tabs */}
+      <div className="flex lg:hidden bg-white/5 backdrop-blur-md rounded-xl p-1 border border-white/10">
+        <button 
+          onClick={() => setActiveTab('waveform')}
+          className={`flex-1 py-2 text-xs font-bold rounded-lg transition-colors ${activeTab === 'waveform' ? 'bg-white/10 text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
+        >Waveform</button>
+        <button 
+          onClick={() => setActiveTab('fft')}
+          className={`flex-1 py-2 text-xs font-bold rounded-lg transition-colors ${activeTab === 'fft' ? 'bg-white/10 text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
+        >Spectrum</button>
+        <button 
+          onClick={() => setActiveTab('telemetry')}
+          className={`flex-1 py-2 text-xs font-bold rounded-lg transition-colors ${activeTab === 'telemetry' ? 'bg-white/10 text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
+        >Telemetry</button>
+      </div>
       
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-4 gap-6 min-h-0">
-        <div className="lg:col-span-3 space-y-6 flex flex-col min-h-0">
+        <div className={`lg:col-span-3 flex-col min-h-0 space-y-0 lg:space-y-6 ${activeTab !== 'telemetry' ? 'flex' : 'hidden lg:flex'}`}>
           
           {/* Time Domain Panel */}
-          <div className="bg-white/5 backdrop-blur-md p-4 rounded-2xl border border-white/10 flex-1 flex flex-col min-h-[250px] md:min-h-0 relative group shadow-xl">
+          <div className={`bg-white/5 backdrop-blur-md p-4 rounded-2xl border border-white/10 flex-1 flex-col min-h-0 relative group shadow-xl ${activeTab === 'waveform' ? 'flex' : 'hidden lg:flex'}`}>
             <div className="flex justify-between items-center mb-3">
               <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-400">
                 Time Domain (Waveform)
@@ -236,7 +253,7 @@ const LiveAnalyzer = () => {
           </div>
           
           {/* Frequency Domain Panel */}
-          <div className="bg-white/5 backdrop-blur-md p-4 rounded-2xl border border-white/10 flex-1 flex flex-col min-h-[250px] md:min-h-0 relative group shadow-xl">
+          <div className={`bg-white/5 backdrop-blur-md p-4 rounded-2xl border border-white/10 flex-1 flex-col min-h-0 relative group shadow-xl ${activeTab === 'fft' ? 'flex' : 'hidden lg:flex'}`}>
              <div className="flex justify-between items-center mb-3">
               <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-400">
                 Frequency Domain (FFT Spectrum)
@@ -268,7 +285,7 @@ const LiveAnalyzer = () => {
         </div>
         
         {/* Measurements Panel */}
-        <div className="bg-white/5 backdrop-blur-md p-5 rounded-2xl border border-white/10 flex flex-col min-h-0 overflow-y-auto shadow-xl">
+        <div className={`bg-white/5 backdrop-blur-md p-5 rounded-2xl border border-white/10 flex-col min-h-0 overflow-y-auto shadow-xl ${activeTab === 'telemetry' ? 'flex' : 'hidden lg:flex'}`}>
           <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-5">
              <h3 className="text-sm font-bold tracking-wide text-zinc-100 flex items-center">
               <Settings2 size={16} className="mr-2 text-indigo-400" /> Live Telemetry

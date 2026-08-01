@@ -9,6 +9,7 @@ const AudioUpload = () => {
   const [isDecoding, setIsDecoding] = useState(false);
   
   const [isPlaying, setIsPlaying] = useState(false);
+  const [activeTab, setActiveTab] = useState<'waveform' | 'analysis'>('waveform');
   const audioContextRef = useRef<AudioContext | null>(null);
   const sourceNodeRef = useRef<AudioBufferSourceNode | null>(null);
   const startTimeRef = useRef<number>(0);
@@ -223,13 +224,25 @@ const AudioUpload = () => {
               
               <div className="w-px h-6 bg-white/10 mx-2"></div>
               
-              <button onClick={() => setAudioBuffer(null)} className="text-xs font-bold text-red-400 hover:text-red-300 bg-red-500/10 hover:bg-red-500/20 px-4 py-2 rounded-lg transition-colors border border-red-500/20">
+              <button onClick={() => setAudioBuffer(null)} className="text-xs font-bold text-red-400 hover:text-red-300 bg-red-500/10 hover:bg-red-500/20 px-4 py-2 rounded-lg transition-colors border border-red-500/20 w-full sm:w-auto mt-3 sm:mt-0">
                 Clear File
               </button>
             </div>
           </div>
 
-          <div className="flex flex-col relative bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-xl overflow-hidden h-64 p-3">
+          {/* Mobile Tabs */}
+          <div className="flex md:hidden bg-white/5 backdrop-blur-md rounded-xl p-1 border border-white/10">
+            <button 
+              onClick={() => setActiveTab('waveform')}
+              className={`flex-1 py-2 text-xs font-bold rounded-lg transition-colors ${activeTab === 'waveform' ? 'bg-white/10 text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
+            >Overview</button>
+            <button 
+              onClick={() => setActiveTab('analysis')}
+              className={`flex-1 py-2 text-xs font-bold rounded-lg transition-colors ${activeTab === 'analysis' ? 'bg-white/10 text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
+            >Analysis Zoom</button>
+          </div>
+
+          <div className={`relative bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-xl overflow-hidden h-64 p-3 flex-col ${activeTab === 'waveform' ? 'flex' : 'hidden md:flex'}`}>
              <div className="absolute top-5 left-5 px-3 py-1.5 bg-black/80 rounded-lg text-[10px] font-mono text-zinc-300 pointer-events-none z-10 uppercase tracking-widest font-bold backdrop-blur-md border border-white/5 shadow-lg">
                Overview Waveform
              </div>
@@ -243,7 +256,7 @@ const AudioUpload = () => {
              </div>
           </div>
 
-           <div className="flex-1 min-h-[250px] md:min-h-0 flex flex-col relative bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl items-center justify-center shadow-inner">
+           <div className={`flex-1 min-h-[250px] md:min-h-0 relative bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl items-center justify-center shadow-inner flex-col ${activeTab === 'analysis' ? 'flex' : 'hidden md:flex'}`}>
              <p className="font-mono text-sm text-zinc-500 font-medium">Detailed Analysis Zoom View (Coming in Next Phase)</p>
           </div>
         </div>
