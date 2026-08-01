@@ -44,6 +44,17 @@ const Sidebar = () => {
       </div>
 
       <div className="flex-1 flex md:flex-col items-center justify-around md:justify-start overflow-y-auto md:py-6 md:px-3 md:space-y-1 w-full md:w-auto h-full md:h-auto px-2">
+        {/* Mobile Home Button */}
+        <Link 
+          to="/" 
+          className="md:hidden flex flex-col items-center justify-center px-2 py-2 text-zinc-400 hover:text-zinc-200 transition-colors"
+        >
+          <div className="w-6 h-6 rounded-md bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mb-1">
+            <Activity size={14} className="text-white" />
+          </div>
+          <span className="text-[10px] font-medium text-center">Home</span>
+        </Link>
+
         {navItems.map((item) => (
           <NavLink
             key={item.path}
