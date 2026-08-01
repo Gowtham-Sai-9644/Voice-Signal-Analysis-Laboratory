@@ -220,7 +220,7 @@ const SpectrumAnalyzer = () => {
   const formatHz = (val: number) => val > 1000 ? (val/1000).toFixed(2) + " kHz" : Math.round(val) + " Hz";
 
   return (
-    <div className="space-y-6 h-full flex flex-col font-sans">
+    <div className="space-y-6 min-h-full flex flex-col font-sans">
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center bg-white/5 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-white/10 space-y-4 lg:space-y-0">
         
         <div className="flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-4 w-full lg:w-auto">
@@ -275,9 +275,9 @@ const SpectrumAnalyzer = () => {
         </div>
       </div>
       
-      <div className="flex-1 bg-white/5 backdrop-blur-md rounded-2xl flex flex-col min-h-0 relative border border-white/10 shadow-xl overflow-hidden">
+      <div className="flex-none h-[55vh] lg:h-auto lg:flex-1 bg-white/5 backdrop-blur-md rounded-2xl flex flex-col min-h-0 relative border border-white/10 shadow-xl overflow-hidden">
         {/* Floating Tooltip */}
-        <div className="absolute top-6 left-6 bg-black/80 backdrop-blur-md text-white font-mono text-xs p-4 rounded-xl shadow-2xl border border-white/10 z-10 min-w-[220px]">
+        <div className="hidden lg:block absolute top-6 left-6 bg-black/80 backdrop-blur-md text-white font-mono text-xs p-4 rounded-xl shadow-2xl border border-white/10 z-10 min-w-[220px]">
           <div className="flex items-center mb-3 border-b border-white/10 pb-2 text-zinc-400 font-sans font-bold">
             <MousePointer2 size={14} className="mr-2" /> Cursor Inspector
           </div>
@@ -310,14 +310,47 @@ const SpectrumAnalyzer = () => {
             ref={canvasRef} 
             width={1600} 
             height={600} 
-            className="w-full h-full object-fill cursor-crosshair absolute inset-0"
+            className="w-full h-full object-fill cursor-crosshair absolute inset-0 touch-none"
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
+            onTouchMove={(e) => {
+              if (e.touches.length > 0) {
+                const touch = e.touches[0];
+                const mockEvent = {
+                  clientX: touch.clientX,
+                  clientY: touch.clientY
+                } as unknown as MouseEvent<HTMLCanvasElement>;
+                handleMouseMove(mockEvent);
+              }
+            }}
+            onTouchEnd={handleMouseLeave}
           />
         </div>
+      </div>
+
+      {/* Mobile Inspector Panel */}
+      <div className="lg:hidden flex-col w-full space-y-4 pb-6 flex">
+         <div className="flex items-center justify-between border-b border-white/5 pb-2">
+           <h3 className="text-[10px] font-bold tracking-widest text-zinc-500 uppercase">Cursor Inspector</h3>
+         </div>
+         <div className="grid grid-cols-2 gap-3">
+            <CompactCard label="Frequency" value={hoverData ? formatHz(hoverData.freq) : '--'} highlight="text-indigo-400" />
+            <CompactCard label="Amplitude" value={hoverData ? hoverData.db.toFixed(1) + ' dB' : '--'} highlight="text-purple-400" />
+         </div>
+         
+         <div className="text-[10px] text-zinc-500 text-center mt-2 italic">
+           Drag your finger across the graph to inspect frequencies.
+         </div>
       </div>
     </div>
   );
 };
+
+const CompactCard = ({ label, value, highlight = 'text-white', className = '' }: { label: string, value: string, highlight?: string, className?: string }) => (
+  <div className={`flex flex-col bg-white/5 p-4 rounded-xl border border-white/5 shadow-lg ${className}`}>
+    <span className="text-zinc-500 text-[10px] uppercase font-bold tracking-wider mb-2">{label}</span>
+    <span className={`font-mono text-lg font-bold ${highlight}`}>{value}</span>
+  </div>
+);
 
 export default SpectrumAnalyzer;
