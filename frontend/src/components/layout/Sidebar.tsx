@@ -4,11 +4,12 @@ import {
   BarChart2, 
   UploadCloud, 
   BookOpen, 
-  Menu
+  Menu,
+  X
 } from 'lucide-react';
 import { useState } from 'react';
 
-const Sidebar = () => {
+const Sidebar = ({ mobileOpen = false, setMobileOpen = () => {} }: { mobileOpen?: boolean, setMobileOpen?: (open: boolean) => void }) => {
   const [collapsed, setCollapsed] = useState(false);
 
   const navItems = [
@@ -20,56 +21,51 @@ const Sidebar = () => {
 
   return (
     <aside 
-      className={`relative z-20 bg-[#09090b]/80 backdrop-blur-xl border-white/10 transition-all duration-300
-        w-full h-16 flex-row border-t border-r-0
-        md:h-full md:flex-col md:border-r md:border-t-0 ${
-        collapsed ? 'md:w-16' : 'md:w-64'
-      } flex`}
+      className={`fixed inset-y-0 left-0 z-50 transform ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}
+        md:relative md:translate-x-0 md:z-20
+        bg-[#09090b] md:bg-[#09090b]/80 md:backdrop-blur-xl border-r border-white/10 transition-transform duration-300
+        w-64 h-full flex-col
+        ${collapsed ? 'md:w-16' : 'md:w-64'} flex`}
     >
-      <div className="hidden md:flex h-16 items-center justify-between px-4 border-b border-white/5">
-        {!collapsed && (
-          <Link to="/" className="flex items-center space-x-2 cursor-pointer group">
+      <div className="flex h-16 items-center justify-between px-4 border-b border-white/5 shrink-0">
+        <div className={`flex items-center ${collapsed ? 'hidden md:hidden' : 'flex'}`}>
+          <Link to="/" onClick={() => setMobileOpen(false)} className="flex items-center space-x-2 cursor-pointer group">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-shadow">
               <Activity size={16} className="text-white" />
             </div>
             <span className="font-bold text-zinc-100 tracking-wide text-sm group-hover:text-white transition-colors">VSAL OS</span>
           </Link>
-        )}
+        </div>
         <button 
           onClick={() => setCollapsed(!collapsed)}
-          className={`p-1.5 text-zinc-400 hover:text-white hover:bg-white/10 rounded-md transition-colors ${collapsed ? 'mx-auto' : ''}`}
+          className={`hidden md:flex p-1.5 text-zinc-400 hover:text-white hover:bg-white/10 rounded-md transition-colors ${collapsed ? 'mx-auto' : ''}`}
         >
           <Menu size={16} />
         </button>
+        <button 
+          onClick={() => setMobileOpen(false)}
+          className="md:hidden p-1.5 text-zinc-400 hover:text-white hover:bg-white/10 rounded-md transition-colors"
+        >
+          <X size={20} />
+        </button>
       </div>
 
-      <div className="flex-1 flex md:flex-col items-center justify-around md:justify-start overflow-y-auto md:py-6 md:px-3 md:space-y-1 w-full md:w-auto h-full md:h-auto px-2">
-        {/* Mobile Home Button */}
-        <Link 
-          to="/" 
-          className="md:hidden flex flex-col items-center justify-center px-2 py-2 text-zinc-400 hover:text-zinc-200 transition-colors"
-        >
-          <div className="w-6 h-6 rounded-md bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mb-1">
-            <Activity size={14} className="text-white" />
-          </div>
-          <span className="text-[10px] font-medium text-center">Home</span>
-        </Link>
-
+      <div className="flex-1 flex flex-col items-start overflow-y-auto py-6 px-3 space-y-1 w-full">
         {navItems.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}
+            onClick={() => setMobileOpen(false)}
             className={({ isActive }) =>
-              `flex flex-col md:flex-row items-center justify-center md:justify-start px-2 md:px-3 py-2 md:py-2.5 text-[10px] md:text-sm font-medium rounded-lg transition-all duration-200 w-16 md:w-full ${
+              `flex flex-row items-center justify-start px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 w-full ${
                 isActive 
                   ? 'bg-white/10 text-white shadow-sm ring-1 ring-white/10' 
                   : 'text-zinc-400 hover:bg-white/5 hover:text-zinc-200'
               }`
             }
           >
-            <item.icon size={18} className={`${collapsed ? "md:mx-auto" : "md:mr-3"} mb-1 md:mb-0`} strokeWidth={2} />
-            <span className={`text-center ${collapsed ? 'hidden' : 'hidden md:inline'}`}>{item.label}</span>
-            <span className="md:hidden truncate w-full text-center">{item.label.split(' ')[0]}</span>
+            <item.icon size={18} className={`${collapsed ? "md:mx-auto" : "mr-3"} shrink-0`} strokeWidth={2} />
+            <span className={`${collapsed ? 'hidden' : 'inline'}`}>{item.label}</span>
           </NavLink>
         ))}
       </div>

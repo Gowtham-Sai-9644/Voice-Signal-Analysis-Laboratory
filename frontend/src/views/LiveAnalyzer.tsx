@@ -10,7 +10,7 @@ const LiveAnalyzer = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
   const [selectedDevice, setSelectedDevice] = useState<string>('');
-  const [activeTab, setActiveTab] = useState<'waveform' | 'fft' | 'bandwidth' | 'parameters'>('waveform');
+  const [activeTab, setActiveTab] = useState<'waveform' | 'fft'>('waveform');
   
   const [metrics, setMetrics] = useState<AudioMetrics | null>(null);
   const lastMetricsUpdate = useRef<number>(0);
@@ -172,7 +172,7 @@ const LiveAnalyzer = () => {
   const formatHz = (val: number) => val > 1000 ? (val/1000).toFixed(2) + " kHz" : Math.round(val) + " Hz";
 
   return (
-    <div className="space-y-4 lg:space-y-6 h-full flex flex-col font-sans">
+    <div className="space-y-4 lg:space-y-6 min-h-full flex flex-col font-sans">
       {/* Desktop Header */}
       <div className="hidden lg:flex flex-row justify-between items-center bg-white/5 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-white/10">
         <div className="flex items-center space-x-4">
@@ -231,7 +231,7 @@ const LiveAnalyzer = () => {
       </div>
 
       {/* Mobile Tabs */}
-      <div className="flex lg:hidden bg-white/5 backdrop-blur-md rounded-xl p-1 border border-white/10 mb-1">
+      <div className="flex lg:hidden bg-white/5 backdrop-blur-md rounded-xl p-1 border border-white/10 mb-1 shrink-0">
         <button 
           onClick={() => setActiveTab('waveform')}
           className={`flex-1 py-2 text-[10px] uppercase font-bold rounded-lg transition-colors tracking-wider ${activeTab === 'waveform' ? 'bg-white/10 text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
@@ -240,21 +240,13 @@ const LiveAnalyzer = () => {
           onClick={() => setActiveTab('fft')}
           className={`flex-1 py-2 text-[10px] uppercase font-bold rounded-lg transition-colors tracking-wider ${activeTab === 'fft' ? 'bg-white/10 text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
         >Spectrum</button>
-        <button 
-          onClick={() => setActiveTab('bandwidth')}
-          className={`flex-1 py-2 text-[10px] uppercase font-bold rounded-lg transition-colors tracking-wider ${activeTab === 'bandwidth' ? 'bg-white/10 text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
-        >Bandwidth</button>
-        <button 
-          onClick={() => setActiveTab('parameters')}
-          className={`flex-1 py-2 text-[10px] uppercase font-bold rounded-lg transition-colors tracking-wider ${activeTab === 'parameters' ? 'bg-white/10 text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
-        >Params</button>
       </div>
       
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-4 gap-0 lg:gap-6 min-h-0">
         <div className={`lg:col-span-3 flex-col min-h-0 space-y-0 lg:space-y-6 ${activeTab === 'waveform' || activeTab === 'fft' ? 'flex' : 'hidden lg:flex'}`}>
           
           {/* Time Domain Panel */}
-          <div className={`bg-transparent lg:bg-white/5 backdrop-blur-md p-0 lg:p-4 rounded-none lg:rounded-2xl border-none lg:border lg:border-white/10 flex-1 flex-col h-[75vh] lg:h-auto min-h-0 relative group shadow-none lg:shadow-xl ${activeTab === 'waveform' ? 'flex' : 'hidden lg:flex'}`}>
+          <div className={`bg-transparent lg:bg-white/5 backdrop-blur-md p-0 lg:p-4 rounded-none lg:rounded-2xl border-none lg:border lg:border-white/10 flex-col h-[55vh] lg:h-auto lg:flex-1 min-h-0 relative group shadow-none lg:shadow-xl ${activeTab === 'waveform' ? 'flex' : 'hidden lg:flex'}`}>
             <div className="flex justify-between items-center mb-2 lg:mb-3">
               <h3 className="text-[10px] lg:text-xs font-mono font-bold uppercase tracking-wider text-zinc-400">
                 Time Domain (Waveform)
@@ -281,7 +273,7 @@ const LiveAnalyzer = () => {
           </div>
           
           {/* Frequency Domain Panel */}
-          <div className={`bg-transparent lg:bg-white/5 backdrop-blur-md p-0 lg:p-4 rounded-none lg:rounded-2xl border-none lg:border lg:border-white/10 flex-1 flex-col h-[75vh] lg:h-auto min-h-0 relative group shadow-none lg:shadow-xl ${activeTab === 'fft' ? 'flex' : 'hidden lg:flex'}`}>
+          <div className={`bg-transparent lg:bg-white/5 backdrop-blur-md p-0 lg:p-4 rounded-none lg:rounded-2xl border-none lg:border lg:border-white/10 flex-col h-[55vh] lg:h-auto lg:flex-1 min-h-0 relative group shadow-none lg:shadow-xl ${activeTab === 'fft' ? 'flex' : 'hidden lg:flex'}`}>
              <div className="flex justify-between items-center mb-2 lg:mb-3">
               <h3 className="text-[10px] lg:text-xs font-mono font-bold uppercase tracking-wider text-zinc-400">
                 Frequency Domain (FFT Spectrum)
@@ -348,26 +340,26 @@ const LiveAnalyzer = () => {
           </div>
         </div>
 
-        {/* Mobile Bandwidth & Parameters Tabs */}
-        <div className={`lg:hidden flex-col flex-1 overflow-y-auto ${activeTab === 'bandwidth' || activeTab === 'parameters' ? 'flex' : 'hidden'}`}>
-          {activeTab === 'parameters' && (
-             <div className="grid grid-cols-2 gap-3 h-full">
-                <CompactCard label="Status" value={isRunning ? 'ACTIVE' : 'STANDBY'} highlight={isRunning ? 'text-emerald-400' : 'text-zinc-400'} />
-                <CompactCard label="Sample Rate" value={metrics ? `${metrics.sampleRate} Hz` : '--'} />
-                <CompactCard label="Latency" value={metrics ? `${metrics.latencyMs.toFixed(1)} ms` : '--'} />
-                <CompactCard label="FFT Size" value={metrics ? metrics.fftSize.toString() : '--'} />
-                <CompactCard label="RMS" value={metrics ? metrics.rms.toFixed(2) : '--'} />
-                <CompactCard label="Peak Amplitude" value={metrics ? metrics.peakAmplitude.toFixed(2) : '--'} />
-                <CompactCard label="Signal Level" value={metrics ? formatDB(metrics.signalLevelDB) : '--'} className="col-span-2" />
-             </div>
-          )}
-          {activeTab === 'bandwidth' && (
-             <div className="grid grid-cols-2 gap-3 h-full">
-                <CompactCard label="Dominant Freq" value={metrics ? formatHz(metrics.dominantFrequency) : '--'} highlight="text-indigo-400" className="col-span-2" />
-                <CompactCard label="Peak Freq" value={metrics ? formatHz(metrics.peakFrequency) : '--'} />
-                <CompactCard label="Band Energy" value={metrics ? metrics.bandEnergy.toExponential(2) : '--'} />
-             </div>
-          )}
+        {/* Mobile Telemetry Stream */}
+        <div className="lg:hidden flex-col w-full space-y-4 pb-6 pt-4 flex">
+           <div className="flex items-center justify-between border-b border-white/5 pb-2">
+             <h3 className="text-[10px] font-bold tracking-widest text-zinc-500 uppercase">Live Telemetry Data</h3>
+           </div>
+           <div className="grid grid-cols-2 gap-3">
+              <CompactCard label="Status" value={isRunning ? 'ACTIVE' : 'STANDBY'} highlight={isRunning ? 'text-emerald-400' : 'text-zinc-400'} />
+              <CompactCard label="Sample Rate" value={metrics ? `${metrics.sampleRate} Hz` : '--'} />
+              <CompactCard label="Latency" value={metrics ? `${metrics.latencyMs.toFixed(1)} ms` : '--'} />
+              <CompactCard label="FFT Size" value={metrics ? metrics.fftSize.toString() : '--'} />
+              
+              <CompactCard label="Dominant Freq" value={metrics ? formatHz(metrics.dominantFrequency) : '--'} highlight="text-indigo-400" className="col-span-2" />
+              
+              <CompactCard label="Peak Freq" value={metrics ? formatHz(metrics.peakFrequency) : '--'} />
+              <CompactCard label="RMS" value={metrics ? metrics.rms.toFixed(2) : '--'} />
+              <CompactCard label="Peak Amplitude" value={metrics ? metrics.peakAmplitude.toFixed(2) : '--'} />
+              <CompactCard label="Band Energy" value={metrics ? metrics.bandEnergy.toExponential(2) : '--'} />
+              
+              <CompactCard label="Signal Level" value={metrics ? formatDB(metrics.signalLevelDB) : '--'} className="col-span-2" />
+           </div>
         </div>
       </div>
     </div>
