@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { MouseEvent } from 'react';
 import { engine } from '../audio/AudioEngine';
-import { Play, Pause, MousePointer2, Activity } from 'lucide-react';
+import { Play, Pause, MousePointer2, Activity, Square, Mic } from 'lucide-react';
 
 const SpectrumAnalyzer = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -221,18 +221,18 @@ const SpectrumAnalyzer = () => {
 
   return (
     <div className="space-y-6 h-full flex flex-col font-sans">
-      <div className="flex justify-between items-center bg-white/5 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-white/10">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center bg-white/5 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-white/10 space-y-4 lg:space-y-0">
         
-        <div className="flex items-center space-x-4">
+        <div className="flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-4 w-full lg:w-auto">
           <h2 className="text-xl font-bold tracking-tight text-white flex items-center">
             <Activity className="mr-3 text-purple-400" size={20} />
             Spectrum Analyzer
           </h2>
           
-          <div className="h-6 w-px bg-white/10 mx-2"></div>
+          <div className="hidden sm:block h-6 w-px bg-white/10 mx-2"></div>
           
           <select 
-            className="border border-white/10 rounded-lg px-3 py-1.5 text-sm bg-black/50 text-zinc-300 outline-none focus:ring-1 focus:ring-purple-500/50"
+            className="border border-white/10 rounded-lg px-3 py-1.5 text-sm bg-black/50 text-zinc-300 outline-none focus:ring-1 focus:ring-purple-500/50 w-full sm:w-auto"
             value={selectedDevice}
             onChange={(e) => setSelectedDevice(e.target.value)}
             disabled={isRunning}
@@ -243,12 +243,12 @@ const SpectrumAnalyzer = () => {
           </select>
         </div>
         
-        <div className="flex items-center space-x-4">
-          <div className="bg-black/50 p-1 rounded-lg flex space-x-1 border border-white/5">
+        <div className="flex flex-wrap items-center gap-3 lg:space-x-4 w-full lg:w-auto">
+          <div className="bg-black/50 p-1 rounded-lg flex space-x-1 border border-white/5 flex-wrap">
             {['Mono', 'Stereo', 'Mid', 'Side'].map(mode => (
               <button 
                 key={mode}
-                className={`px-3 py-1.5 text-xs font-bold rounded-md transition-colors ${channelMode === mode ? 'bg-white/10 text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
+                className={`px-3 py-1.5 text-xs font-bold rounded-md transition-colors flex-1 text-center sm:flex-none ${channelMode === mode ? 'bg-white/10 text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
                 onClick={() => setChannelMode(mode)}
               >
                 {mode}
@@ -261,15 +261,16 @@ const SpectrumAnalyzer = () => {
             <span>Peak Hold</span>
           </label>
 
-          <div className="h-6 w-px bg-white/10 mx-2"></div>
+          <div className="hidden sm:block h-6 w-px bg-white/10 mx-2"></div>
 
-          <button onClick={() => setIsPaused(!isPaused)} className="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-5 py-2 rounded-lg text-sm font-bold transition-colors flex items-center" disabled={!isRunning}>
+          <button onClick={() => setIsPaused(!isPaused)} className="flex-1 sm:flex-none justify-center bg-white/5 hover:bg-white/10 border border-white/10 text-white px-5 py-2 rounded-lg text-sm font-bold transition-colors flex items-center" disabled={!isRunning}>
             {isPaused ? <Play size={16} className="mr-2" /> : <Pause size={16} className="mr-2" />}
             {isPaused ? 'Resume' : 'Freeze'}
           </button>
 
-          <button onClick={toggleEngine} className={isRunning ? "bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 px-5 py-2 rounded-lg text-sm font-bold transition-colors flex items-center shadow-sm" : "bg-white text-black hover:bg-zinc-200 px-5 py-2 rounded-lg text-sm font-bold transition-colors flex items-center shadow-lg shadow-white/10"}>
-            {isRunning ? 'Stop Analysis' : 'Start Analysis'}
+          <button onClick={toggleEngine} className={`flex-1 sm:flex-none justify-center ${isRunning ? "bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 shadow-sm" : "bg-white text-black hover:bg-zinc-200 shadow-lg shadow-white/10"} px-5 py-2 rounded-lg text-sm font-bold transition-colors flex items-center`}>
+            {isRunning ? <Square size={16} className="mr-2" /> : <Mic size={16} className="mr-2" />}
+            {isRunning ? 'Stop Analysis' : 'Start Engine'}
           </button>
         </div>
       </div>

@@ -41,10 +41,10 @@ const InfoTheoryLab = () => {
   const latestSession = history.length > 0 ? history[0] : null;
 
   return (
-    <div className="space-y-6 h-full font-sans flex flex-col overflow-y-auto pb-8">
+    <div className="space-y-8 font-sans pb-10">
       
       {/* HEADER */}
-      <div className="flex justify-between items-center bg-white/5 backdrop-blur-md p-5 rounded-2xl shadow-xl border border-white/10">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white/5 backdrop-blur-md p-5 rounded-2xl shadow-xl border border-white/10 space-y-4 sm:space-y-0">
         <div>
           <h2 className="text-xl font-bold tracking-tight text-white flex items-center">
             <BookOpen className="mr-3 text-indigo-400" /> Session Reports

@@ -172,13 +172,13 @@ const LiveAnalyzer = () => {
 
   return (
     <div className="space-y-6 h-full flex flex-col font-sans">
-      <div className="flex justify-between items-center bg-white/5 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-white/10">
-        <div className="flex items-center space-x-4">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white/5 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-white/10 space-y-4 md:space-y-0">
+        <div className="flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-4 w-full md:w-auto">
           <h2 className="text-xl font-semibold tracking-tight text-white flex items-center">
             <Activity className="mr-2 text-indigo-400" size={20} /> Live Analyzer
           </h2>
           
-          <div className="h-6 w-px bg-white/10 mx-2"></div>
+          <div className="hidden sm:block h-6 w-px bg-white/10 mx-2"></div>
           
           <select 
             className="border border-white/10 rounded-lg px-3 py-1.5 text-sm bg-black/50 text-zinc-300 outline-none focus:ring-1 focus:ring-indigo-500/50"
@@ -209,12 +209,12 @@ const LiveAnalyzer = () => {
         <div className="lg:col-span-3 space-y-6 flex flex-col min-h-0">
           
           {/* Time Domain Panel */}
-          <div className="bg-white/5 backdrop-blur-md p-4 rounded-2xl border border-white/10 flex-1 flex flex-col min-h-0 relative group shadow-xl">
+          <div className="bg-white/5 backdrop-blur-md p-4 rounded-2xl border border-white/10 flex-1 flex flex-col min-h-[250px] md:min-h-0 relative group shadow-xl">
             <div className="flex justify-between items-center mb-3">
               <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-400">
                 Time Domain (Waveform)
               </h3>
-              <span className="text-[10px] font-mono text-zinc-500">Y: Amplitude | X: Time (ms)</span>
+              <span className="text-[10px] font-mono text-zinc-500 hidden sm:inline">Y: Amplitude | X: Time (ms)</span>
             </div>
             <div className="flex-1 w-full bg-black/40 rounded-xl border border-white/5 relative overflow-hidden shadow-inner">
               <canvas 
@@ -223,11 +223,11 @@ const LiveAnalyzer = () => {
                 height={300} 
                 className="w-full h-full object-fill absolute inset-0 mix-blend-screen"
               />
-              <div className="absolute bottom-2 left-0 w-full flex justify-between px-3 text-xs font-mono font-semibold text-zinc-500 pointer-events-none">
+              <div className="absolute bottom-2 left-0 w-full flex justify-between px-3 text-[10px] sm:text-xs font-mono font-semibold text-zinc-500 pointer-events-none">
                 <span className="bg-black/60 px-1.5 py-0.5 rounded backdrop-blur-md">0 ms</span>
                 <span className="bg-black/60 px-1.5 py-0.5 rounded backdrop-blur-md">Time &rarr;</span>
               </div>
-              <div className="absolute top-0 left-0 h-full flex flex-col justify-between py-3 px-2 text-xs font-mono font-semibold text-zinc-500 pointer-events-none">
+              <div className="absolute top-0 left-0 h-full flex flex-col justify-between py-3 px-2 text-[10px] sm:text-xs font-mono font-semibold text-zinc-500 pointer-events-none">
                 <span className="bg-black/60 px-1.5 py-0.5 rounded backdrop-blur-md">+1.0</span>
                 <span className="bg-black/60 px-1.5 py-0.5 rounded backdrop-blur-md">0.0</span>
                 <span className="bg-black/60 px-1.5 py-0.5 rounded backdrop-blur-md">-1.0</span>
@@ -236,7 +236,7 @@ const LiveAnalyzer = () => {
           </div>
           
           {/* Frequency Domain Panel */}
-          <div className="bg-white/5 backdrop-blur-md p-4 rounded-2xl border border-white/10 flex-1 flex flex-col min-h-0 relative group shadow-xl">
+          <div className="bg-white/5 backdrop-blur-md p-4 rounded-2xl border border-white/10 flex-1 flex flex-col min-h-[250px] md:min-h-0 relative group shadow-xl">
              <div className="flex justify-between items-center mb-3">
               <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-400">
                 Frequency Domain (FFT Spectrum)
@@ -250,14 +250,14 @@ const LiveAnalyzer = () => {
                 height={300} 
                 className="w-full h-full object-fill absolute inset-0 mix-blend-screen"
               />
-              <div className="absolute bottom-2 left-0 w-full flex justify-between px-3 text-xs font-mono font-semibold text-zinc-500 pointer-events-none">
+              <div className="absolute bottom-2 left-0 w-full flex justify-between px-3 text-[10px] sm:text-xs font-mono font-semibold text-zinc-500 pointer-events-none">
                 <span className="bg-black/60 px-1.5 py-0.5 rounded backdrop-blur-md">20 Hz</span>
-                <span className="bg-black/60 px-1.5 py-0.5 rounded backdrop-blur-md">100 Hz</span>
+                <span className="bg-black/60 px-1.5 py-0.5 rounded backdrop-blur-md hidden sm:inline">100 Hz</span>
                 <span className="bg-black/60 px-1.5 py-0.5 rounded backdrop-blur-md">1 kHz</span>
-                <span className="bg-black/60 px-1.5 py-0.5 rounded backdrop-blur-md">10 kHz</span>
+                <span className="bg-black/60 px-1.5 py-0.5 rounded backdrop-blur-md hidden sm:inline">10 kHz</span>
                 <span className="bg-black/60 px-1.5 py-0.5 rounded backdrop-blur-md">20 kHz</span>
               </div>
-              <div className="absolute top-0 left-0 h-full flex flex-col justify-between py-3 px-2 text-xs font-mono font-semibold text-zinc-500 pointer-events-none">
+              <div className="absolute top-0 left-0 h-full flex flex-col justify-between py-3 px-2 text-[10px] sm:text-xs font-mono font-semibold text-zinc-500 pointer-events-none">
                 <span className="bg-black/60 px-1.5 py-0.5 rounded backdrop-blur-md">0 dB</span>
                 <span className="bg-black/60 px-1.5 py-0.5 rounded backdrop-blur-md">-50 dB</span>
                 <span className="bg-black/60 px-1.5 py-0.5 rounded backdrop-blur-md">-100 dB</span>

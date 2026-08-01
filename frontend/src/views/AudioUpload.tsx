@@ -159,7 +159,7 @@ const AudioUpload = () => {
 
   return (
     <div className="space-y-6 h-full flex flex-col font-sans">
-      <div className="flex justify-between items-center bg-white/5 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-white/10">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white/5 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-white/10 space-y-4 sm:space-y-0">
         <h2 className="text-xl font-bold tracking-tight text-white flex items-center">
           <UploadCloud className="mr-3 text-indigo-400" /> Audio Upload & Offline Analysis
         </h2>
@@ -199,7 +199,7 @@ const AudioUpload = () => {
       {audioBuffer && (
         <div className="flex-1 flex flex-col space-y-6 min-h-0">
           
-          <div className="flex justify-between items-center bg-white/5 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-white/10">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white/5 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-white/10 space-y-4 sm:space-y-0">
             <div className="flex items-center space-x-4">
               <div className="bg-indigo-500/10 p-3 rounded-xl border border-indigo-500/20 text-indigo-400 shadow-inner">
                 <FileAudio size={24} />
@@ -243,7 +243,7 @@ const AudioUpload = () => {
              </div>
           </div>
 
-           <div className="flex-1 flex flex-col relative bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl items-center justify-center shadow-inner">
+           <div className="flex-1 min-h-[250px] md:min-h-0 flex flex-col relative bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl items-center justify-center shadow-inner">
              <p className="font-mono text-sm text-zinc-500 font-medium">Detailed Analysis Zoom View (Coming in Next Phase)</p>
           </div>
         </div>

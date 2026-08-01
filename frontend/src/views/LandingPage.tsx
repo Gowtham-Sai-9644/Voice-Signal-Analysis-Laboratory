@@ -99,7 +99,7 @@ const LandingPage = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-500 leading-[1.1] mb-8 tracking-tighter max-w-5xl mx-auto filter drop-shadow-sm"
+            className="text-5xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-500 leading-[1.1] mb-8 tracking-tighter max-w-5xl mx-auto filter drop-shadow-sm"
           >
             Professional Voice Analysis, <br />
             <span className="bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-indigo-400 animate-gradient">Made Simple.</span>
